@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+  nginx:
+    container_name: wtdm_nginx
+    build:
+      context: .
+      dockerfile: .docker/nginx.dockerfile
+    volumes:
+      - ./frontend:/var/www/
+    ports:
+      - "${NGINX_EXTERNAL_PORT}:80"
+    restart: unless-stopped
+    networks:
+      - wwr-network
+
+  wwr_backend:
+    container_name: wwr_backend
+    volumes:
+      - ./backend:/var/www/
+    working_dir: /var/www/
+    build:
+      context: .
+      dockerfile: ./.docker/backend.dockerfile
+    networks:
+      - wwr-network
+
+  wwr_frontend:
+    container_name: wwr_frontend
+    volumes:
+      - ./frontend:/var/www/
+    working_dir: /var/www/
+    build:
+      context: .
+      dockerfile: ./.docker/frontend.dockerfile
+    networks:
+      - wwr-network
+
+networks:
+  wwr-network:
+    driver: bridge
