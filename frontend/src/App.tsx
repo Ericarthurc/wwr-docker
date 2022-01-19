@@ -48,7 +48,15 @@ function App() {
               </>
             }
           />
-          <Route path="/*" element={<Navigate replace to="/" />} />
+          {/* <Route path="/*" element={<Navigate replace to="/" />} /> */}
+          <Route
+            path="/*"
+            element={
+              <>
+                <h1>404 NOT FOUND!</h1>
+              </>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </div>
