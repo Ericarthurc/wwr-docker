@@ -1,22 +1,13 @@
-import { Application, Router } from "../deps.ts";
-
-const router = new Router({ prefix: "/api" });
-router.get("/", (ctx, next) => {
-  ctx.response.body = { name: "Eric" };
-});
+import { Application, cyan, underline } from "../deps.ts";
+import itemRouter from "./routes/item.routes.ts";
 
 const app = new Application();
 
-app.use(router.routes()).use(router.allowedMethods());
+app.use(itemRouter.routes());
+app.use(itemRouter.allowedMethods());
 
-app.addEventListener("listen", ({ hostname, port, secure }) => {
-  console.log(
-    `Listening on: ${secure ? "https://" : "http://"}${
-      hostname ?? "localhost"
-    }:${port}`
-  );
-});
+console.log(cyan(underline(`Oak started at: ${Deno.env.get("OAK_PORT")}`)));
 
 await app.listen({
-  port: 3000,
+  port: parseInt(<string>Deno.env.get("OAK_PORT"), 10) || 3030,
 });
